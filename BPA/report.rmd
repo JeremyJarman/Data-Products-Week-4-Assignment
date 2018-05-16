@@ -1,0 +1,64 @@
+---
+title: "Burst Pressure Test Report"
+author: ""
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: pdf_document
+params:
+  kval: NA
+  Plot: NA
+  Rated: NA
+  batchMean: NA
+  SdDiv: NA
+  TotalDevs: NA
+  Table: NA
+  BatchNum: NA
+  Comments: NA
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, eval = TRUE)
+```
+
+
+
+##Lot Number: 
+```{r, comment=""} 
+cat(params$BatchNum)
+```
+
+
+##Summary
+
+```{r, comment ="", results = 'asis', fig.align='left'}
+library(knitr)
+arguments <- c("Number of devices", "Average Burst Pressure", "Standard Deviation", "Chosen k Values", "Calculated Rated Burst Pressure")
+
+values <- c(params$TotalDevs, params$batchMean, params$SdDiv, params$kval, params$Rated)
+
+df<-cbind(arguments, values)
+
+kable(df, col.names = c("", "Value"))
+
+```
+
+##Results
+```{r,echo=FALSE}
+params$Plot
+```
+
+```{r, results='asis', message=FALSE, echo=FALSE, fig.align='right'}
+library(xtable)
+options(xtable.floating = FALSE)
+options(xtable.timestamp ="")
+options(xtable.comment = FALSE)
+xtable(params$Table)
+
+```
+
+##Comments
+```{r, comment="" , echo=FALSE}
+
+cat(params$Comments, lables = NULL, fill = FALSE)
+
+
+```
